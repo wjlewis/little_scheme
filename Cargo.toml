@@ -1,0 +1,5 @@
+[package]
+name = "little_scheme"
+version = "0.1.0"
+authors = ["wjl <william.lewis112358@gmail.com>"]
+edition = "2018"
