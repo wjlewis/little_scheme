@@ -1,43 +1,7 @@
 mod aux;
 mod header;
 
-use header::Header;
-
-pub struct Memory {
-    space: Vec<u8>,
-}
-
-impl Mem for Memory {
-    fn write(&mut self, addr: usize, datum: u8) {
-        todo!()
-    }
-
-    fn read(&self, addr: usize) -> u8 {
-        todo!()
-    }
-
-    fn alloc<T: MemWrite>(&mut self, obj: &T) -> usize {
-        todo!()
-    }
-}
-
-impl Memory {
-    pub fn new(size: usize) -> Memory {
-        let space = vec![0; size];
-        let mut mem = Memory { space };
-
-        // IMPORTANT We initialize this header's `size` to the entire
-        // size of the memory we have. However, this isn't correct: we
-        // need to subtract the size of the header itself. However, this
-        // is easiest to do _after_ the header has already been created.
-        let mut header = Header::new(0, size, false);
-        let header_size = header.size();
-        header.set_size(size - header_size);
-        header.write(&mut mem, 0);
-
-        mem
-    }
-}
+pub use header::Header;
 
 /// Represents a memory store as a "sink of bytes". This entails two
 /// capabilities: writing a byte to a specific location, and reading the

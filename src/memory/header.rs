@@ -6,12 +6,17 @@ use std::mem::size_of;
 /// flags indicating if the block has been allocated (`allocd`), or if
 /// the block has been marked as in use during a marking phase
 /// (`marked`).
+///
+/// # Notes
+///
+/// The `size` of a header represents its writable capacity, and does
+/// *not* include the size of the header itself.
 #[derive(Debug, PartialEq)]
 pub struct Header {
-    next: usize,
-    size: usize,
-    allocd: bool,
-    marked: bool,
+    pub next: usize,
+    pub size: usize,
+    pub allocd: bool,
+    pub marked: bool,
 }
 
 impl Header {
@@ -23,10 +28,6 @@ impl Header {
             allocd,
             marked: false,
         }
-    }
-
-    pub fn set_size(&mut self, size: usize) {
-        self.size = size;
     }
 }
 

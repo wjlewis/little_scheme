@@ -1,4 +1,4 @@
-use super::memory::{Mem, MemRead, MemWrite};
+use crate::memory::{Mem, MemRead, MemWrite};
 use std::mem::size_of;
 
 /// Represents an object that can be written to and read from our
@@ -105,6 +105,7 @@ impl MemWrite for Box<SchemeObj> {
 
 /// Used to indicate the type of object represented by the following
 /// bytes in memory.
+#[derive(PartialEq)]
 pub enum Tag {
     Box,
     Nil,
