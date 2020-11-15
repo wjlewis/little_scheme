@@ -7,11 +7,27 @@ use std::mem::size_of;
 /// the block has been marked as in use during a marking phase
 /// (`marked`).
 #[derive(Debug, PartialEq)]
-struct Header {
+pub struct Header {
     next: usize,
     size: usize,
     allocd: bool,
     marked: bool,
+}
+
+impl Header {
+    /// Creates a header for a freshly allocated block of memory.
+    pub fn new(next: usize, size: usize, allocd: bool) -> Header {
+        Header {
+            next,
+            size,
+            allocd,
+            marked: false,
+        }
+    }
+
+    pub fn set_size(&mut self, size: usize) {
+        self.size = size;
+    }
 }
 
 impl MemRead for Header {
@@ -48,6 +64,10 @@ impl MemWrite for Header {
 
         mem.write(addr + 2 * word_size, flags);
     }
+
+    fn size(&self) -> usize {
+        size_of::<usize>() + size_of::<usize>() + 1
+    }
 }
 
 #[cfg(test)]
@@ -69,5 +89,20 @@ mod tests {
         header.write(&mut mem, addr);
 
         assert_eq!(Header::read(&mem, addr), header);
+    }
+
+    #[cfg(test)]
+    impl Mem for Vec<u8> {
+        fn alloc<T: MemWrite>(&mut self, obj: &T) -> usize {
+            0
+        }
+
+        fn write(&mut self, addr: usize, byte: u8) {
+            self[addr] = byte;
+        }
+
+        fn read(&self, addr: usize) -> u8 {
+            self[addr]
+        }
     }
 }

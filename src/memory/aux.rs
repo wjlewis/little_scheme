@@ -56,17 +56,9 @@ impl MemWrite for usize {
             mem.write(addr + i, byte);
         }
     }
-}
 
-impl MemRead for isize {
-    fn read<M: Mem>(mem: &M, addr: usize) -> isize {
-        usize::read(mem, addr) as isize
-    }
-}
-
-impl MemWrite for isize {
-    fn write<M: Mem>(&self, mem: &mut M, addr: usize) {
-        (*self as usize).write(mem, addr)
+    fn size(&self) -> usize {
+        size_of::<usize>()
     }
 }
 
